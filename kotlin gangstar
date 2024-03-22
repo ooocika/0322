@@ -1,0 +1,709 @@
+kotlin{
+  js{
+    browser{
+      webpackTask{
+        output.libraryTarget = "commonjs2"
+      }
+    }
+    binaries.executable()
+  }
+}
+//
+tasks.named<KotlinJsCompile>("compileKotlinJs").configure{
+  compilerOptions.moduleKind.set(org.jetbrains.kotlin.gradle.dsl.JsModuleKind.MODULE_COMMONJS)}
+//
+kotlin{
+  js{
+    useCommonJs()
+  }
+}
+//
+module.exports.sayHello = function(name){alert("Hello, "+ name);}
+
+//
+@JsModule("hello")
+external fun sayHello(name: String)
+//
+ external fun foo()
+
+ external class C
+//
+fun bar() = "!"+foo()+"!"
+//
+module.exports ={
+  mylib:{
+    foo:function(){},
+    bar: function(){}
+  },
+  pkg2: {
+    baz:function(){}
+  }
+}
+}
+//
+@file:JsModule("extModule")
+@file:JsQualifier("mylib.pkg1")
+package extlib.pkg1
+
+external fun foo()
+
+external fun bar()
+//
+function topLevelSayHello(name){alert("Hello, " + name);}
+if(module && module.exports){
+  module.exports = topLevelSayHello;
+}
+//
+@JsModule("hello")
+@JsNonModule
+@JsName("topLevelSayHello")
+external fun sayHello(name: String)
+//
+open class Shape
+class Rectangle : Shape()
+
+inline fun<reified T> accessReifiedTypeArg() =
+  println(typeOf<T>().toString())
+
+  fun main(){
+    val s = Shape()  
+    val r = Rectangle()
+
+    println(r::class.simpleName)
+    println(Shape::class.simpleName)
+    println(Shape::class.js.name)
+  
+    println(Shape::class.isInstance(r))
+    println(Rectangle::class.isInstance(s))
+    val rShape = Shape::class.class.cast(r)
+  
+    accessReifiedTypeArg<Rectangle>()
+  }
+  //
+  repositories{
+    mavenCentral()
+  }
+
+  dependencies{
+    implementation(kotlin("stdlib-js"))
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.8.0")
+    }
+  // 
+  fun main(){
+    document.body!!.append.div{
+      h1{
+        +"Welcome to Kotlin/JS!"
+      }
+      p{
+        +Fancy joining this years 
+        a("https://kotlinconf.com/"){
+        +"KotlinConf"
+        }
+        +?
+      }
+    }
+  }
+  //
+  dependencies{
+  implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.430"))
+  
+  implementation("react")
+  react-dom
+
+  emotion
+
+  implementation(npm("react-player", "2.12.0"))
+
+  share
+
+
+  implementation(coroutines-core)
+  serialization-json
+  }
+  //
+
+  fun main(){
+    document.bgColor = "red"
+  }
+  //
+  fun main(){
+    val container =document.getElementById("root") ?: error("Couldn't find root container!")
+    createRoot(container).render(Fragment.create){
+      h1{
+        +"hello, React+Kotlin/JS!"
+      }
+    })
+  }
+  //
+  h1{
+    +"KotlinConf Explorer"
+  }
+  div{
+    h3{
+      +"Videos to watch"
+    }
+    p{
+      +"John Doe: Building and breaking things"
+    }
+    p{
+      "Jan Smith: The development process"
+    }
+    p{
+      +"Matt Miller: The Web 7.0"
+    }
+    h3{
+      +"Videos watched"
+    }
+    p{
+      +"Tom Jerry: Mouseless development"
+    }
+  }
+  div{
+    h3{
+      +"John Doe: Building and breaking things"
+    }
+    img{
+      src ="https://via.placeholder.com/640x360.png?text=Video+Player+Placeholder"
+    }
+  }
+  //
+  data class Video(
+    val id: Int,
+    val title: String,
+    val speaker: String,
+    val videoUrl: String
+  )
+  //
+  val unwatchedVideos = listOf(
+    Video(1, " Opening Keynote", Andrey Breslav), "http"
+    Video(2, "Dissecting the stdlib", "Huyen Tue Dao", "http")
+    Video(3,"Kotlin and Spring Boot", " Nicolas Frankel", "http")
+    )
+
+  val watchedVideo = listOf(
+    Video(4, "Creating Internal DSLs in Kotlin", "Venkat Subramaniam", "http")
+  )
+  //
+  for(video in unwatchedVideos){
+    p{
+      +"${video.speaker}: ${video.title}"
+    }
+  }
+  //
+  for(video in watchedVideos){
+  p{
+    +"${video.speaker}: ${video.title}"
+  }  
+  }
+  //
+  dependencies{
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+  }
+  //
+  div{
+    css{
+      position = Position.absolute
+      top = 10.px
+      right = 10.px
+    }
+    h3{
+      +"Jphn Doe: Building and breaking things"
+    }
+    img{
+      src = "http"
+    }
+  }
+  //
+  import kotlinx.coroutines.async
+import react.*
+import react.dom.*
+import kotlinx.browser.window
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import emotion.react.css
+import csstype.Position
+import csstype.px
+import react.dom.html.ReactHTML.h1
+import react.dom.html.ReactHTML.h3
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.p
+import react.dom.html.ReactHTML.img
+
+val App = FC<Props>{
+  
+}
+//
+fun main(){
+  val container = document.getElementById("root")?:error("Couldn't find root container!")
+  createRoot(container).render(App.create())
+}
+//
+
+val VideoList = FC<Props>{
+  for(video in unwatchedVideos){
+    p{
+      +"${video.speaker}: ${video.title}"
+    }
+  }
+}
+//
+div{
+  h3{
+    +"Video to watch"
+  }
+  VideoList()
+
+  h3{
+    +"Videos watched"
+  }
+  VideoList()
+}
+//
+external interface VideoListProps : Props{
+  var videos: List<Video>
+}
+//
+val VideoList = FC<VideoListProps>{props -> 
+for(video in props.videos){
+  p{
+    key = video.id.toString()
+    +"${video.speaker}: ${video.title}"
+  }
+}}
+//
+h3{
+  +"Video to watch"
+}
+VideoList{
+  videos = unwatchedVideos
+}
+h3{
+  +"Videos watched"
+}
+VideoList{
+  videos = watchedVideos
+  }
+//
+p{
+  key = video.id.toString()
+  onClick = {
+    window.alert("Clicked $video!")
+  }
+  +"${video.speaker}: ${video.title}"
+}
+//
+val VideoList = FC<VideoListProps>{props ->
+var selectedVideo: Video? by useState(null)
+
+for(video in props.videos){
+  p{
+    key = video.id.toString()
+    onClick = {
+      selectedVideo = video
+    }
+    if(video == selectedVideo){
+      +" >"
+    }
+    +"${video.speaker}: ${video.title}"
+  }
+}
+}
+//
+val App = FC<Props>}{
+  var currentVideo: Video? by useState(null)
+}
+//
+external internal VideoListProps : Props{
+  var videos: List<Video>
+  var selectedVideo: Video?
+}
+//
+if(video == props.selectedVideo){
+  +">"
+}
+//
+external interface VideoListProps: Props{
+
+  var onSelectVideo: (Video)-> Unit
+}
+//
+onClick = {
+  props.onSelectVideo(video)
+}
+//
+VideoList{
+  videos = unwatchedVideos
+  selectedVideo = currentVideo
+  onSelectedVideo = {video->
+  currentVideo = video}
+}
+}
+//
+external interface VideoPlayerProps : Props{
+  var video: Video
+}
+val VideoPlayer = FC<VideoPlayerProps>{props -> 
+div{
+  css{
+    position = Position.absolute
+    top = 10.px
+    right = 10.px
+    
+  }
+  h3{
+    +"${props.video.speaker} : ${props.video.title}"
+  }
+  img{
+    src = "http:// "
+  }
+}}
+//
+currentVideo?.let{curr ->
+VideoPlayer{
+  video = curr
+}}
+//
+external interface VideoPlayerProps : Props{
+  var video : Video
+  var onWatchedButtonPressed: (Video) ->Unit
+  var unwatchedVideo: Boolean
+}
+//
+button{
+  css{
+    display = Display.block
+    backgroundColor = if(props.unwatchedVideo)NamedColor.lightgreen else NamedColor.red
+  }
+  onClick = {
+    props.onWatchedButtonPressed(props.video)
+  }
+  if(props.unwatchedVideo){
+    +"Mark as watched"
+  }else{
+    +"Mark as unwatched"
+  }
+}
+//
+val App = FC<Props>{
+  var currentVideo: Video? by useState(null)
+  var unwatchedVideos: List<Video> by useState(listOf(
+    Video(1, " Opening Keynote", " Andrey Breslav", "http")
+    Video(2, "Dissecting the stdlib", " Huyen Tue Dao", " http")
+    Video(3," Kotlin and Spring Boot", " Nicolas Frankel", " http")
+  ))
+  var watchedVideos: List<Video> by useState(listOf(
+    Video(4, " Creating Internal DSLs in Kotlin", "Venkat Subramaniam", " http")
+  ))
+                                            
+}
+//
+VideoPlayer{
+  video = curr
+  unwatchedVideo = curr in unwatchedVideos
+  onWatchedButtonPressed = {
+    if(video in unwatchedVideos){
+      unwatchedVideos = unwatchedVideos - video
+      watchedVideos = watchedVideos + video
+    }else{
+      watchedVideos = watchedVideos - video
+      unwatchedVideos = unwatchedVideos + video
+    }
+  }
+  }
+//
+dependencies{
+
+  implementation(npm("react-player", " 2.12.0"))
+}
+//
+@JsName("default")
+external val ReactPlayer: ComponentClass<dynamic>
+  //
+
+
+@file:JsModule("react-player")
+  @file:JsNonModule
+
+  @JsName("default")
+  external val ReactPlayer: ComponentClass<Re >
+
+  external interface ReactPlayerProps : Props{
+    var url : String
+    var controls : Boolean
+  }
+  //
+  ReactPlayer{
+    url = props.video.videoUrl
+    controls = true
+  }
+  //
+  dependencies{
+    implementation(npm("react-share", " 4.4.1"))
+    }
+  //
+  @file:JsModule("react-share")
+  @file:JsNonModule
+
+import react.ComponentClass
+import react.Props
+
+@JsName("EmailIcon")
+external val EmailIcon: ComponentClass<IconProps>
+
+  @JsName("EmailShareButon")
+  external val EmailShareButton: ComponentClass<ShareButtonProps>
+
+  @JsName("TelegramIcon")
+  external val TelegramIcon : ComponentClass<IconProps>
+
+  
+  @JsName("TelegramShareButton")
+  external val TelegramShareButton:ComponentClass<ShareButtonProps>
+
+  external interface ShareButtonProps : Props{
+    var url : String
+  }
+  external interface IconProps : Props{
+    var size : Int
+    var round: Boolean
+  }
+  //
+div{
+  css{
+    position = Postion.absolute
+    top = 10.px
+    right = 10.px
+  }
+  EmailShareButton{
+    url = props.video.videoUrl
+    EmailIcon{
+      size = 32
+      round = true
+    }
+  }
+TelegramShareButton{
+  url = props.video.videoUrl
+  TelegramIcon{
+    size = 32
+    round = true
+  }
+}  
+}
+//
+plugins{
+  kotlin("plugin.serialization")version"1.9.20"
+}
+
+dependencies{
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+}
+//
+@Serializable
+data class Video(
+  val id: Int,
+  val title: String,
+  val speaker: String,
+  val videoUrl: String
+)
+//
+suspend fun fetchVideo(id: Int) : Video{
+  val reponse = window
+  .fetch("http://my-json-server.typicode.com/kotlin-hands-on/kotlinconf-json/videos/$id")
+  .await()
+  .text()
+  .await()
+  return Json.decodeFromString(response)
+
+  
+}
+//
+suspend fun fetchVideos(): List<Video> = coroutinScope{
+  (1..25).map{id->
+ 
+}
+
+
+async{
+  fetchVideo(if)
+}
+}.awaitAll()
+}
+//
+val mainScope = MainScope()
+
+val App = FC<Props>{
+  var currentVideo? by useState(null)
+  var unbwatchedVideos: List<Video> by useState(emptyList())
+  var watchedVideos: List<Video> by useState(emptyList())
+
+
+  useEffectOnce{
+    mainScope.launch{
+      unwatchedVideos = fetchVideos()
+    }
+  }
+//
+git init
+  heroku create
+  git add
+  git commit -. "initial commit"
+  //
+  tasks.register("stage"){
+    dependsOn("build")
+  }
+  //
+  {
+    "root": "build/distributions"
+  }
+  //
+  git add -A
+  git commit -m " add stage task and static contentt root configuration "
+
+  git push heroku master
+  //
+  val addressee = "World"
+
+  print(
+    createHTML().html{
+      body{
+        h1{
+          +"Hello, $addressee!"
+        }
+      
+    }
+  )
+  //
+  dependencies{
+    implementation("org.jetbrains.kotlin:kotlin-scripting-common")
+    jvm
+    dependencies/ maven
+    coroutines -core
+  }
+  
+    //
+    
+abstract class ScriptWithMavenDeps
+      //
+      @KotlinScript(
+        fileExtension = "scripwithdeps.kts",
+      
+      compilationConfiguration =ScripWithMavenDepsConfiguration::class
+      )
+      abstract class ScriptWittMavenDeps
+
+      object ScriptWithMavenDepsConfiguration: ScriptCompilationConfiguration()
+
+    //
+    object scriptWithMavenDepsConfiguration : ScriptCompilationConfiguration(
+      {
+        defaultImports(DependsOn::class, Repository::class)
+        jvm{
+          dependenciesFromCurrentContext(wholeClasspath = true)
+        }
+        refineConfiguration{
+          onAnnotations(Dependson:class, Repository::class,handler = :: configureMavenDepsOnAnnotations)
+        }
+      }
+    )
+    //
+    fun configureMavenDepsOnAnnotations(context: ScriptConfigurationRefinementContext):
+      ResultWithDiagnostics<ScriptCompilationConfiguration>{
+        val annotations = context.collectedData?.get(ScriptCollectedData.collectedAnnotations)?.takeIf{it.isNotEmpty?: return context.compilationConfiguration.asSuccess()
+        
+        return runBlocking{
+          resolver.resolveFromScriptSourceAnnotations(annotations)
+          
+        }.onSuccess{
+          context.compilationConfiguration.with{
+            dependencies.append(JvmDependency(it))
+          }.asSuccess()
+        }}
+        private val resolver = CompoundDependenciesResolver(FileSystemDependenciesResolver(), MavenDependenciesResolver())
+      }
+
+      //
+      implementation(project(":script-definition"))
+      //
+      fun main(vararg args: String){
+        if(args.size != 1){
+          println("usage: <app> <script file>")
+        }else{
+          val scriptFile = File (args[0])
+        
+        println("Executing script $scriptFile")
+        evalFile(scriptFile)
+        }
+      }
+      //
+      fun evalFile(scriptFile : File); ResultWithDiagnostics<EvaluationResult>{
+        val compilationConfiguration = createJvmCompilationConfigurationFromTemplate<ScriptWithMavenDeps>()
+        return BasicJvmScriptingHost().eval(scriptFile.toScriptSource(), compilationConfiguration, null)
+      }
+      //
+      fun main(vararg args: String){
+        if(args.size != 1){
+          println("usage: <app> <script file>")
+        }else{
+          val scriptFile = File(argss[0])
+        
+        println("Executing script $scriptFile")
+        val res = evalFile(scriptFile)
+        res.reports.forEach{
+          if(it.severity > ScriptDiagnostic.Severity.DEBUG){
+            println(" : ${it.message}" + if(it.exception == null)"" else ": ${it.exception}")
+          }
+        }
+        
+        }
+      }
+      //
+    import kotlinx.html.*;
+    import kotlinx.html.stream.*;
+    import kotlinx.html.attributes.*
+
+      val addressee = "World"
+
+      print{
+        createHTML().html{
+          body{
+            h1{+ " Hell, $addressee!"}
+          }
+        }
+      }
+      //
+      fun main(){
+        val numbers = mutableListOf("one", " two", " three",' four')
+      numbers.add("five")
+      println(numbers)
+      }//
+      fun printAll(strings: Collection<String>){
+        for(s in strings) print("$s")
+      
+      println()
+      
+      }
+
+      fun main(){
+        val stringList = listOf("one","two","three")
+      
+      printAll(stringList)
+      
+      val stringLis = setOf("one","two","three")
+      printAll(stringset)
+      
+      }
+      //
+      fun List<String>.getShortWordsTo(shortWords: MutableList<String>, maxLength: Int){
+        this.filterTo(shortWords){it.length <= maxLength}
+
+        val articles = setOf("a"."A","an","An","the","The")
+      shortWords -= articles
+      }
+
+      fun main(){
+        val word = "A long time afo in a galaxy far fat away".split("")
+      
+        val shortWords = mutableListOf<String>()
+         word.getShortWordsTo(shortWords, 3 ) 
+      println(shortWords)
+      }
